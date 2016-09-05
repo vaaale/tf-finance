@@ -12,9 +12,10 @@ if __name__ == "__main__":
     train_x, train_y = load_data()
 
 
+
     #data.to_csv("data.csv", sep=',', index=True, decimal='.')
 
 
-    train(train_x, train_y)
+    #train(train_x, train_y)
 
     

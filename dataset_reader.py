@@ -44,14 +44,14 @@ def download_data():
     data = data.fillna(0)
     labels = labels.fillna(0)
 
-    train_x = [x for x in data]
-    train_y = [y for y in labels]
+    #train_x = [x for x in data]
+    #train_y = [y for y in labels]
 
     if not DEBUG:
         with open("data.pickle", "wb") as f:
-            pickle.dump((train_x, train_y), f)
+            pickle.dump((data, labels), f)
 
-    return train_x, train_y
+    return data, labels
 
 
 def load_data():
