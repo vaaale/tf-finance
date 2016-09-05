@@ -1,4 +1,5 @@
 import tensorflow as tf
+import numpy as np
 
 lstm_size = 200
 batch_size = 100
@@ -20,3 +21,11 @@ def train(train_x, train_y):
             print(example.shape, label.shape)
         coord.request_stop()
         coord.join(threads)
+
+
+
+
+if __name__ == "__main__":
+    data = [x for x in np.random.rand(3)]
+
+    print data
