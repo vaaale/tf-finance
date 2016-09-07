@@ -64,7 +64,7 @@ def load_data():
         train_x, train_y = download_data()
 
 
-    return train_x, train_y
+    return train_x.values.tolist(), train_y.values.tolist()
 
 
 if __name__ == "__main__":

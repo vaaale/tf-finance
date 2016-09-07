@@ -1,31 +1,38 @@
 import tensorflow as tf
-import numpy as np
+from dataset_reader import load_data
 
 lstm_size = 200
 batch_size = 100
 
 
-def train(train_x, train_y):
+def train(iter):
+    batch_x, batch_y = iter.next()
+    bull = tf.constant(10, dtype=tf.float32)
+    x = tf.placeholder(tf.float32, shape=[None, 149])
+    y = tf.placeholder(tf.float32, shape=[None, 22])
+    z = tf.add(x, bull)
+
     with tf.Session() as sess:
         tf.initialize_all_variables().run()
-
-        coord = tf.train.Coordinator()
-        threads = tf.train.start_queue_runners(coord=coord)
-
-        # We do 10 iterations (steps) where we grab an example from the CSV file.
-        for iteration in range(1, 11):
-            # Our graph isn't evaluated until we use run unless we're in an interactive session.
-            example, label = sess.run([train_x, train_y])
-
-            print("Iteration ", iteration)
-            print(example.shape, label.shape)
-        coord.request_stop()
-        coord.join(threads)
+        for i in range(100):
+            res = sess.run(z, feed_dict={x: batch_x, y: batch_y})
+            print res
+            print res.shape
 
 
+
+def data_iterator(train_x, train_y):
+    """ A simple data iterator """
+    while True:
+        batch_size = 128
+        for batch_idx in range(0, len(train_x), batch_size):
+            images_batch = train_x[batch_idx:batch_idx+batch_size]
+            labels_batch = train_y[batch_idx:batch_idx+batch_size]
+            yield images_batch, labels_batch
 
 
 if __name__ == "__main__":
-    data = [x for x in np.random.rand(3)]
+    train_x, train_y = load_data()
+    iter = data_iterator(train_x, train_y)
 
-    print data
+    train(iter)

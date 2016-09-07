@@ -25,7 +25,7 @@ sess = tf.Session()
 
 # train
 sess.run(tf.initialize_all_variables())
-for i in range(20000):
+for i in range(2000):
     sess.run(train_function, feed_dict={x:xx, y_:yy})
     if i % 1000 == 0:
         print(sess.run(cost_function, feed_dict={x:xx, y_:yy}))
