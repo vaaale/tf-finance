@@ -64,15 +64,25 @@ def load_data():
     return train_x.values.tolist(), train_y.values.tolist()
 
 
-def data_iterator(batch_size):
+def data_iterator(batch_size, seq_len):
     """ A simple data iterator """
-    seq_length = 10
+    offset = 1585
     train_x, train_y = load_data()
+    train_x = train_x[offset:]
+    train_y = train_y[offset:]
+
+    tot_len = len(train_x)
+    round_offset = int(tot_len / (batch_size *  seq_len)) * (batch_size *  seq_len)
+    train_x = train_x[(tot_len - round_offset):]
+    train_y = train_y[(tot_len - round_offset):]
+    print "Length ", tot_len
+    print "Offset ", round_offset
+    print "New length", len(train_x)
     while True:
         #batch_size = 128
-        for batch_idx in range(0, len(train_x), batch_size):
-            images_batch = train_x[batch_idx:batch_idx+batch_size * seq_length]
-            labels_batch = train_y[batch_idx:batch_idx+batch_size * seq_length]
+        for batch_idx in range(0, len(train_x), batch_size*seq_len):
+            images_batch = train_x[batch_idx:batch_idx+batch_size * seq_len]
+            labels_batch = train_y[batch_idx:batch_idx+batch_size]
             yield np.array(images_batch), np.array(labels_batch)
 
 
@@ -86,7 +96,7 @@ if __name__ == "__main__":
     fut_ticker_list   = ["CHRIS/ICE_T1"]
     stock_ticker_list = ["YAHOO/OL_NHY"]
 
-    iter = data_iterator(32)
+    iter = data_iterator(100, 10)
     x, y = iter.next()
 
 

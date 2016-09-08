@@ -28,7 +28,7 @@ handle 28 sequences of 28 steps for every sample.
 # Parameters
 learning_rate = 0.001
 training_iters = 100000
-batch_size = 128
+batch_size = 100
 display_step = 10
 
 # Network Parameters
@@ -91,13 +91,13 @@ with tf.Session() as sess:
     sess.run(init)
     step = 1
     # Keep training until reach max iterations
-    iter = data_iterator(batch_size)
+    iter = data_iterator(batch_size, n_steps)
     while step * batch_size < training_iters:
         #batch_x, batch_y = mnist.train.next_batch(batch_size)
         batch_x, batch_y = iter.next()
         # Reshape data to get 28 seq of 28 elements
         batch_x = batch_x.reshape((batch_size, n_steps, n_input))
-        batch_y = batch_y.reshape((batch_size, n_steps, n_classes))
+        batch_y = batch_y.reshape((batch_size, n_classes))
         # Run optimization op (backprop)
         sess.run(optimizer, feed_dict={x: batch_x, y: batch_y})
         if step % display_step == 0:
