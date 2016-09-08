@@ -44,9 +44,6 @@ def download_data():
     data = data.fillna(0)
     labels = labels.fillna(0)
 
-    #train_x = [x for x in data]
-    #train_y = [y for y in labels]
-
     if not DEBUG:
         with open("data.pickle", "wb") as f:
             pickle.dump((data, labels), f)
@@ -67,15 +64,30 @@ def load_data():
     return train_x.values.tolist(), train_y.values.tolist()
 
 
+def data_iterator(batch_size):
+    """ A simple data iterator """
+    seq_length = 10
+    train_x, train_y = load_data()
+    while True:
+        #batch_size = 128
+        for batch_idx in range(0, len(train_x), batch_size):
+            images_batch = train_x[batch_idx:batch_idx+batch_size * seq_length]
+            labels_batch = train_y[batch_idx:batch_idx+batch_size * seq_length]
+            yield np.array(images_batch), np.array(labels_batch)
+
+
+
 if __name__ == "__main__":
-    DEBUG = True
+    DEBUG = False
     pd.set_option('display.max_rows', 500)
     pd.set_option('display.max_columns', 500)
     pd.set_option('display.width', 1000)
 
     fut_ticker_list   = ["CHRIS/ICE_T1"]
     stock_ticker_list = ["YAHOO/OL_NHY"]
-    train_x, train_y = load_data()
-    #train_x, train_y = download_data()
+
+    iter = data_iterator(32)
+    x, y = iter.next()
+
 
 

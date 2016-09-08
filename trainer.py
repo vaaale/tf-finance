@@ -21,10 +21,11 @@ def train(iter):
 
 
 
-def data_iterator(train_x, train_y):
+def data_iterator(batch_size):
     """ A simple data iterator """
+    train_x, train_y = load_data()
     while True:
-        batch_size = 128
+        #batch_size = 128
         for batch_idx in range(0, len(train_x), batch_size):
             images_batch = train_x[batch_idx:batch_idx+batch_size]
             labels_batch = train_y[batch_idx:batch_idx+batch_size]
@@ -32,7 +33,7 @@ def data_iterator(train_x, train_y):
 
 
 if __name__ == "__main__":
-    train_x, train_y = load_data()
-    iter = data_iterator(train_x, train_y)
+    #train_x, train_y = load_data()
+    iter = data_iterator(32)
 
     train(iter)
